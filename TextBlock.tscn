@@ -3,6 +3,14 @@
 [ext_resource type="Script" path="res://TextBlock.cs" id="1_tkiq6"]
 
 [node name="TextBlock" type="RichTextLabel"]
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 82.0
+offset_bottom = 60.0
+bbcode_enabled = true
+text = "[right]Forward into the invisible
+lapse of conscious
+resolution towards
+conscious revolution"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
 script = ExtResource("1_tkiq6")
