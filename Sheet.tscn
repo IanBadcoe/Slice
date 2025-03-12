@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://soxrrjcw4wyn"]
+
+[ext_resource type="PackedScene" uid="uid://bgbqkbjisootx" path="res://TextBlock.tscn" id="1_m0x6q"]
+
+[node name="Sheet" type="Panel"]
+clip_contents = true
+custom_minimum_size = Vector2(500, 500)
+layout_direction = 2
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TextBlock" parent="." instance=ExtResource("1_m0x6q")]
+layout_mode = 0

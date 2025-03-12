@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://bgbqkbjisootx"]
+
+[ext_resource type="Script" path="res://TextBlock.cs" id="1_tkiq6"]
+
+[node name="TextBlock" type="RichTextLabel"]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_tkiq6")
