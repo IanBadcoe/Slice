@@ -1,15 +1,46 @@
-[gd_scene load_steps=2 format=3 uid="uid://bgbqkbjisootx"]
+[gd_scene load_steps=8 format=3 uid="uid://bgbqkbjisootx"]
 
+[ext_resource type="FontFile" uid="uid://dksus12klucjb" path="res://Font/Montserrat/Montserrat-VariableFont_wght.ttf" id="1_bm2j5"]
 [ext_resource type="Script" path="res://TextBlock.cs" id="1_tkiq6"]
+[ext_resource type="FontFile" uid="uid://c22plr5pcdib6" path="res://Font/Montserrat/Montserrat-Italic-VariableFont_wght.ttf" id="2_d50dg"]
+
+[sub_resource type="FontVariation" id="FontVariation_aeo8d"]
+base_font = ExtResource("1_bm2j5")
+variation_opentype = {
+2003265652: 300
+}
+
+[sub_resource type="FontVariation" id="FontVariation_k8jl0"]
+base_font = ExtResource("2_d50dg")
+variation_opentype = {
+2003265652: 300
+}
+
+[sub_resource type="FontVariation" id="FontVariation_68p45"]
+base_font = ExtResource("2_d50dg")
+variation_opentype = {
+2003265652: 300
+}
+variation_embolden = 1.0
+
+[sub_resource type="FontVariation" id="FontVariation_utfkq"]
+base_font = ExtResource("1_bm2j5")
+variation_opentype = {
+2003265652: 300
+}
+variation_embolden = 1.0
 
 [node name="TextBlock" type="RichTextLabel"]
-offset_right = 82.0
-offset_bottom = 60.0
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_aeo8d")
+theme_override_fonts/italics_font = SubResource("FontVariation_k8jl0")
+theme_override_fonts/bold_italics_font = SubResource("FontVariation_68p45")
+theme_override_fonts/bold_font = SubResource("FontVariation_utfkq")
+theme_override_font_sizes/bold_italics_font_size = 20
+theme_override_font_sizes/italics_font_size = 20
+theme_override_font_sizes/normal_font_size = 20
+theme_override_font_sizes/bold_font_size = 20
 bbcode_enabled = true
-text = "[right]Forward into the invisible
-lapse of conscious
-resolution towards
-conscious revolution"
 fit_content = true
 scroll_active = false
 autowrap_mode = 0
