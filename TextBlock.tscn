@@ -1,41 +1,17 @@
-[gd_scene load_steps=8 format=3 uid="uid://bgbqkbjisootx"]
+[gd_scene load_steps=6 format=3 uid="uid://bgbqkbjisootx"]
 
-[ext_resource type="FontFile" uid="uid://dksus12klucjb" path="res://Font/Montserrat/Montserrat-VariableFont_wght.ttf" id="1_bm2j5"]
+[ext_resource type="FontFile" uid="uid://cewv34ju2e86u" path="res://Font/Montserrat/static/Montserrat-Regular.ttf" id="1_ko5bd"]
 [ext_resource type="Script" path="res://TextBlock.cs" id="1_tkiq6"]
-[ext_resource type="FontFile" uid="uid://c22plr5pcdib6" path="res://Font/Montserrat/Montserrat-Italic-VariableFont_wght.ttf" id="2_d50dg"]
-
-[sub_resource type="FontVariation" id="FontVariation_aeo8d"]
-base_font = ExtResource("1_bm2j5")
-variation_opentype = {
-2003265652: 300
-}
-
-[sub_resource type="FontVariation" id="FontVariation_k8jl0"]
-base_font = ExtResource("2_d50dg")
-variation_opentype = {
-2003265652: 300
-}
-
-[sub_resource type="FontVariation" id="FontVariation_68p45"]
-base_font = ExtResource("2_d50dg")
-variation_opentype = {
-2003265652: 300
-}
-variation_embolden = 1.0
-
-[sub_resource type="FontVariation" id="FontVariation_utfkq"]
-base_font = ExtResource("1_bm2j5")
-variation_opentype = {
-2003265652: 300
-}
-variation_embolden = 1.0
+[ext_resource type="FontFile" uid="uid://b4o5js7ol117v" path="res://Font/Montserrat/static/Montserrat-Italic.ttf" id="2_bhc6h"]
+[ext_resource type="FontFile" uid="uid://bjr8sim6u3xlx" path="res://Font/Montserrat/static/Montserrat-BoldItalic.ttf" id="3_rr7qe"]
+[ext_resource type="FontFile" uid="uid://dabjy6rvnrlcn" path="res://Font/Montserrat/static/Montserrat-Bold.ttf" id="4_csi71"]
 
 [node name="TextBlock" type="RichTextLabel"]
 theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_fonts/normal_font = SubResource("FontVariation_aeo8d")
-theme_override_fonts/italics_font = SubResource("FontVariation_k8jl0")
-theme_override_fonts/bold_italics_font = SubResource("FontVariation_68p45")
-theme_override_fonts/bold_font = SubResource("FontVariation_utfkq")
+theme_override_fonts/normal_font = ExtResource("1_ko5bd")
+theme_override_fonts/italics_font = ExtResource("2_bhc6h")
+theme_override_fonts/bold_italics_font = ExtResource("3_rr7qe")
+theme_override_fonts/bold_font = ExtResource("4_csi71")
 theme_override_font_sizes/bold_italics_font_size = 20
 theme_override_font_sizes/italics_font_size = 20
 theme_override_font_sizes/normal_font_size = 20

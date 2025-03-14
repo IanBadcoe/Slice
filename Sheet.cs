@@ -150,7 +150,7 @@ public partial class Sheet : Panel
         {
             var Params = new TextBlockParams
             {
-                Text = "1. left\nleft",
+                Text = "1. [b]left[/b]\n[i]left[/i]",
                 Side = SheetSide.Right,
                 Half = TextHalf.Left,
                 HalfPosition = 100
@@ -162,7 +162,7 @@ public partial class Sheet : Panel
         {
             var Params = new TextBlockParams
             {
-                Text = "right\nright .1",
+                Text = "[b][i]right[/i][/b]\nright .1",
                 Side = SheetSide.Left,
                 Half = TextHalf.Right,
                 HalfPosition = 400
