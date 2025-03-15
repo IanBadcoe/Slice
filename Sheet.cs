@@ -1,10 +1,23 @@
 using Godot;
 using System;
+using System.Diagnostics;
 
 public partial class Sheet : Panel
 {
+    const float HalfSpace = 2.0f;       ///< pixels
+    const float RotateSpeed = 100.0f;   ///< degress/s
+
     static PackedScene TextBlockScene = GD.Load<PackedScene>("res://TextBlock.tscn");
-    const float HalfSpace = 2.0f;
+
+    bool MouseOver = false;
+    bool IsDragging = false;
+    bool IsRotateDragging = false;
+
+    Vector2 GrabMousePosition;
+    Vector2 GrabMyPosition;
+    float GrabMyRotation;
+
+    StyleBoxFlat StyleBox;
 
     public enum SheetSide
     {
@@ -45,6 +58,9 @@ public partial class Sheet : Panel
 
         public float Rotation = 0;      ///< only applies when "internal"
     }
+
+    // adding half texts
+    // vvvvvvvvvvvvvvvvv
 
     public void AddTextBlock(TextBlockParams Params)
     {
@@ -141,11 +157,134 @@ public partial class Sheet : Panel
         }
     }
 
+    // drag and drop
+    // vvvvvvvvvvvvv
+
+    public override void _Input(InputEvent @event)
+    {
+        if (IsDragging)
+        {
+            HandleInput_Dragging(@event);
+        }
+        else if (IsRotateDragging)
+        {
+            HandleInput_RotateDragging(@event);
+        }
+    }
+
+    void HandleInput_Dragging(InputEvent @event)
+    {
+        if (@event is InputEventMouseMotion mouse_motion)
+        {
+            Vector2 delta = mouse_motion.Position - GrabMousePosition;
+            Position = GrabMyPosition + delta;
+        }
+    }
+
+    void HandleInput_RotateDragging(InputEvent @event)
+    {
+        if (@event is InputEventMouseMotion mouse_motion)
+        {
+            float delta = mouse_motion.Position.Y - GrabMousePosition.Y;
+            RotationDegrees = GrabMyRotation + delta;
+        }
+    }
+
+    void StartDragging()
+    {
+        IsDragging = true;
+        GrabMousePosition = GetViewport().GetMousePosition();
+        GrabMyPosition = Position;
+    }
+
+    void EndDragging()
+    {
+        IsDragging = false;
+    }
+
+    void StartRotateDragging()
+    {
+        IsRotateDragging = true;
+        GrabMousePosition = GetViewport().GetMousePosition();
+        GrabMyRotation = RotationDegrees;
+    }
+
+    void EndRotateDragging()
+    {
+        IsRotateDragging = false;
+    }
+
+    public override void _Process(double delta)
+    {
+        if (MouseOver)
+        {
+            if (Input.IsActionJustPressed("Grab"))
+            {
+                StartDragging();
+            }
+
+            if (Input.IsActionJustReleased("Grab"))
+            {
+                EndDragging();
+            }
+
+            if (Input.IsActionPressed("RotateCW") || Input.IsActionJustReleased("RotateCW"))
+            {
+                RotationDegrees += RotateSpeed * (float)delta;
+            }
+
+            if (Input.IsActionPressed("RotateCCW") || Input.IsActionJustReleased("RotateCCW"))
+            {
+                RotationDegrees -= RotateSpeed * (float)delta;
+            }
+
+            if (Input.IsActionJustPressed("RotateDrag"))
+            {
+                StartRotateDragging();
+            }
+
+            if (Input.IsActionJustReleased("RotateDrag"))
+            {
+                EndRotateDragging();
+            }
+
+        }
+    }
+
+    void ShowBorder(bool show)
+    {
+        int width = 0;
+
+        if (show)
+        {
+            width = 1;
+        }
+
+        StyleBox.BorderWidthLeft = StyleBox.BorderWidthRight = StyleBox.BorderWidthTop = StyleBox.BorderWidthBottom = width;
+    }
+
     public override void _Ready()
     {
-        var new_sb = new StyleBoxFlat();
-        new_sb.BgColor = Color.FromHsv((float)Random.Shared.NextDouble(), 0.5f, 0.5f);
-        AddThemeStyleboxOverride("panel", new_sb);
+        StyleBox = GetThemeStylebox("panel") as StyleBoxFlat;
+
+        MouseEntered += () =>
+        {
+            MouseOver = true;
+
+            ShowBorder(true);
+        };
+        MouseExited += () =>
+        {
+            MouseOver = false;
+
+            ShowBorder(false);
+        };
+
+        PivotOffset = Size / 2;
+
+        // test code
+        // vvvvvvvvv
+        StyleBox.BgColor = Color.FromHsv((float)Random.Shared.NextDouble(), 0.5f, 0.5f);
 
         {
             var Params = new TextBlockParams

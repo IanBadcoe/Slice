@@ -7,6 +7,7 @@
 [ext_resource type="FontFile" uid="uid://dabjy6rvnrlcn" path="res://Font/Montserrat/static/Montserrat-Bold.ttf" id="4_csi71"]
 
 [node name="TextBlock" type="RichTextLabel"]
+mouse_filter = 2
 theme_override_colors/default_color = Color(1, 1, 1, 1)
 theme_override_fonts/normal_font = ExtResource("1_ko5bd")
 theme_override_fonts/italics_font = ExtResource("2_bhc6h")

@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://soxrrjcw4wyn"]
+[gd_scene load_steps=3 format=3 uid="uid://soxrrjcw4wyn"]
 
 [ext_resource type="Script" path="res://Sheet.cs" id="1_w6l83"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3n0s2"]
+border_color = Color(0.93, 0.93, 0.93, 1)
 
 [node name="Sheet" type="Panel"]
 clip_contents = true
@@ -8,4 +11,6 @@ custom_minimum_size = Vector2(500, 500)
 layout_direction = 2
 offset_right = 40.0
 offset_bottom = 40.0
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_3n0s2")
 script = ExtResource("1_w6l83")
