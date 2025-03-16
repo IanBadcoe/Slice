@@ -1,5 +1,6 @@
 using Godot;
 using System.Diagnostics;
+using TextConfig;
 
 public partial class DragDropController : Node2D
 {
@@ -228,7 +229,7 @@ public partial class DragDropController : Node2D
     private void EndSnapping()
     {
         SawANonDragRotate = false;
-        
+
         Debug.Print("EndSnapping");
     }
 }
