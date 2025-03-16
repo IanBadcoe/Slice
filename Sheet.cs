@@ -143,12 +143,12 @@ public partial class Sheet : Panel
         {
             if (Input.IsActionPressed("RotateCW") || Input.IsActionJustReleased("RotateCW"))
             {
-                RotationDegrees += DDC.RotationSpeed * (float)delta;
+                DDC.RotateSheet((float)delta);
             }
 
             if (Input.IsActionPressed("RotateCCW") || Input.IsActionJustReleased("RotateCCW"))
             {
-                RotationDegrees -= DDC.RotationSpeed * (float)delta;
+                DDC.RotateSheet(-(float)delta);
             }
 
             ShowBorder(true);
@@ -173,7 +173,7 @@ public partial class Sheet : Panel
 
     public override void _Ready()
     {
-        DDC = DragDropController.GetInstance();
+        DDC = DragDropController.Instance;
 
         StyleBox = GetThemeStylebox("panel").Duplicate(false) as StyleBoxFlat;
         AddThemeStyleboxOverride("panel", StyleBox);

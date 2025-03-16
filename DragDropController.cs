@@ -1,6 +1,4 @@
 using Godot;
-using System;
-using System.Collections;
 using System.Diagnostics;
 
 public partial class DragDropController : Node2D
@@ -19,24 +17,27 @@ public partial class DragDropController : Node2D
     DragMode Mode = DragMode.None;
     Sheet DragSheet;
 
+    // we need non-drag rotation to pick up the "transaction-like" behaviour of a drag
+    // so that snapping will be able to track its "real" position and its "snapped" position
+    bool SawANonDragRotate = false;
+    bool SawANonDragRotateThisFrame = false;
+
     Vector2 LastMousePosition;
 
-    // Singletoo Instance
+    // Singleton Instance
     // vvvvvvvvvvvvvvvvvv
 
-//    static PackedScene DDCScene = GD.Load<PackedScene>("res://DragDropController.tscn");
-    static DragDropController Instance;
+    public static DragDropController Instance
+    {
+        get;
+        private set;
+    }
 
-    public override void _Ready()
+    DragDropController()
     {
         Debug.Assert(Instance == null);
 
         Instance = this;
-    }
-
-    public static DragDropController GetInstance()
-    {
-        return Instance;
     }
 
     // Input
@@ -107,16 +108,19 @@ public partial class DragDropController : Node2D
 
     public bool DoIHaveFocus(Sheet sheet)
     {
-        if (DragSheet != null)
-        {
-            return DragSheet == sheet;
-        }
+        return FocusSheet == sheet;
+    }
 
-        return MouseFocusSheet == sheet;
+    public Sheet FocusSheet
+    {
+        get
+        {
+            return DragSheet ?? MouseFocusSheet;
+        }
     }
 
     // speed of movement (allowing for us to maybe holding the "fine adjustment" action)
-    public float RotationSpeed
+    float RotationSpeed
     {
         get
         {
@@ -129,7 +133,7 @@ public partial class DragDropController : Node2D
         }
     }
 
-    public float DragSpeedFactor
+    float DragSpeedFactor
     {
         get
         {
@@ -183,5 +187,48 @@ public partial class DragDropController : Node2D
             Mode = DragMode.None;
             DragSheet = null;
         }
+    }
+
+    // handling (non drag) rotate actions
+    // (allowing for snapping)
+    // vvvvvvvvvvvvvvvvvvvvvvv
+    public void RotateSheet(float delta)
+    {
+        FocusSheet.RotationDegrees += RotationSpeed * (float)delta;
+
+        if (!SawANonDragRotate)
+        {
+            BeginSnapping();
+        }
+
+        SawANonDragRotateThisFrame = true;
+        SawANonDragRotate = true;
+    }
+
+    public override void _Process(double delta)
+    {
+        if (SawANonDragRotate)
+        {
+            if (!SawANonDragRotateThisFrame)
+            {
+                EndSnapping();
+            }
+
+            SawANonDragRotateThisFrame = false;
+        }
+    }
+
+    // snapping
+    // vvvvvvvv
+    private void BeginSnapping()
+    {
+        Debug.Print("BeginSnapping");
+    }
+
+    private void EndSnapping()
+    {
+        SawANonDragRotate = false;
+        
+        Debug.Print("EndSnapping");
     }
 }
