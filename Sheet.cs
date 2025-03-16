@@ -1,63 +1,16 @@
 using Godot;
 using System;
-using System.Diagnostics;
+using TextConfig;
 
 public partial class Sheet : Panel
 {
     const float HalfSpace = 2.0f;       ///< pixels
-    const float RotateSpeed = 100.0f;   ///< degress/s
 
     static PackedScene TextBlockScene = GD.Load<PackedScene>("res://TextBlock.tscn");
 
-    bool MouseOver = false;
-    bool IsDragging = false;
-    bool IsRotateDragging = false;
-
-    Vector2 GrabMousePosition;
-    Vector2 GrabMyPosition;
-    float GrabMyRotation;
-
     StyleBoxFlat StyleBox;
 
-    public enum SheetSide
-    {
-        Right,
-        Bottom,
-        Left,
-        Top,
-        Internal
-    }
-
-    public enum TextHalf
-    {
-        Left,
-        Right
-    }
-
-    public struct TextBlockParams
-    {
-        public TextBlockParams() {}
-
-        public SheetSide Side = SheetSide.Right;
-
-        public TextHalf Half = TextHalf.Left;
-
-        public String Text = "Lorem ipsum\nto the\nNth1ndegree";
-
-        public Vector2 Position = new Vector2(0,0);
-
-        public float HalfPosition
-        {
-            get {
-                return Position.X;
-            }
-            set {
-                Position.X = value;
-            }
-        }
-
-        public float Rotation = 0;      ///< only applies when "internal"
-    }
+    DragDropController DDC;
 
     // adding half texts
     // vvvvvvvvvvvvvvvvv
@@ -160,94 +113,49 @@ public partial class Sheet : Panel
     // drag and drop
     // vvvvvvvvvvvvv
 
-    public override void _Input(InputEvent @event)
-    {
-        if (IsDragging)
-        {
-            HandleInput_Dragging(@event);
-        }
-        else if (IsRotateDragging)
-        {
-            HandleInput_RotateDragging(@event);
-        }
-    }
-
-    void HandleInput_Dragging(InputEvent @event)
-    {
-        if (@event is InputEventMouseMotion mouse_motion)
-        {
-            Vector2 delta = mouse_motion.Position - GrabMousePosition;
-            Position = GrabMyPosition + delta;
-        }
-    }
-
-    void HandleInput_RotateDragging(InputEvent @event)
-    {
-        if (@event is InputEventMouseMotion mouse_motion)
-        {
-            float delta = mouse_motion.Position.Y - GrabMousePosition.Y;
-            RotationDegrees = GrabMyRotation + delta;
-        }
-    }
-
-    void StartDragging()
-    {
-        IsDragging = true;
-        GrabMousePosition = GetViewport().GetMousePosition();
-        GrabMyPosition = Position;
-    }
-
-    void EndDragging()
-    {
-        IsDragging = false;
-    }
-
-    void StartRotateDragging()
-    {
-        IsRotateDragging = true;
-        GrabMousePosition = GetViewport().GetMousePosition();
-        GrabMyRotation = RotationDegrees;
-    }
-
-    void EndRotateDragging()
-    {
-        IsRotateDragging = false;
-    }
-
     public override void _Process(double delta)
     {
-        if (MouseOver)
+        // DDC will ignore us if we aren't the sheet with mouse focus
+        if (Input.IsActionJustPressed("Grab"))
         {
-            if (Input.IsActionJustPressed("Grab"))
-            {
-                StartDragging();
-            }
+            DDC.StartDragging(this);
+        }
 
-            if (Input.IsActionJustReleased("Grab"))
-            {
-                EndDragging();
-            }
+        if (Input.IsActionJustPressed("RotateDrag"))
+        {
+            DDC.StartRotateDragging(this);
+        }
 
+        // we need to correctly end a drag, even if the mouse isn't still over us (e.g. we moved behind something else)
+        //
+        // DragDropController will ignore us if we aren't being dragged
+        if (Input.IsActionJustReleased("Grab"))
+        {
+            DDC.EndDragging(this);
+        }
+
+        if (Input.IsActionJustReleased("RotateDrag"))
+        {
+            DDC.EndRotateDragging(this);
+        }
+
+        if (DDC.DoIHaveFocus(this))
+        {
             if (Input.IsActionPressed("RotateCW") || Input.IsActionJustReleased("RotateCW"))
             {
-                RotationDegrees += RotateSpeed * (float)delta;
+                RotationDegrees += DDC.RotationSpeed * (float)delta;
             }
 
             if (Input.IsActionPressed("RotateCCW") || Input.IsActionJustReleased("RotateCCW"))
             {
-                RotationDegrees -= RotateSpeed * (float)delta;
+                RotationDegrees -= DDC.RotationSpeed * (float)delta;
             }
 
-            if (Input.IsActionJustPressed("RotateDrag"))
-            {
-                StartRotateDragging();
-            }
-
-            if (Input.IsActionJustReleased("RotateDrag"))
-            {
-                EndRotateDragging();
-            }
-
+            ShowBorder(true);
+        }
+        else
+        {
+            ShowBorder(false);
         }
     }
 
@@ -265,19 +173,20 @@ public partial class Sheet : Panel
 
     public override void _Ready()
     {
-        StyleBox = GetThemeStylebox("panel") as StyleBoxFlat;
+        DDC = DragDropController.GetInstance();
+
+        StyleBox = GetThemeStylebox("panel").Duplicate(false) as StyleBoxFlat;
+        AddThemeStyleboxOverride("panel", StyleBox);
 
         MouseEntered += () =>
         {
-            MouseOver = true;
-
-            ShowBorder(true);
+            DDC.TryGetMouseFocus(this);
         };
         MouseExited += () =>
         {
-            MouseOver = false;
-
-            ShowBorder(false);
+            // will ignore us if we don't have it, which we may not, if a drag in progress has
+            // prevented us from getting it
+            DDC.LoseMouseFocus(this);
         };
 
         PivotOffset = Size / 2;

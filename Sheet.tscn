@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Sheet.cs" id="1_w6l83"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3n0s2"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5p0u6"]
 border_color = Color(0.93, 0.93, 0.93, 1)
 
 [node name="Sheet" type="Panel"]
@@ -12,5 +12,5 @@ layout_direction = 2
 offset_right = 40.0
 offset_bottom = 40.0
 mouse_filter = 1
-theme_override_styles/panel = SubResource("StyleBoxFlat_3n0s2")
+theme_override_styles/panel = SubResource("StyleBoxFlat_5p0u6")
 script = ExtResource("1_w6l83")

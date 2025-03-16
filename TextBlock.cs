@@ -1,10 +1,11 @@
 using Godot;
+using TextConfig;
 
 public partial class TextBlock : RichTextLabel
 {
     bool IsLaidout = false;
 
-    Sheet.TextBlockParams InnerParams;
+    TextBlockParams InnerParams;
 
     public Sheet Sheet
     {
@@ -12,7 +13,7 @@ public partial class TextBlock : RichTextLabel
         set;
     }
 
-    public Sheet.TextBlockParams Params
+    public TextBlockParams Params
     {
         get { return InnerParams; }
         set { InnerParams = value; }
@@ -24,7 +25,7 @@ public partial class TextBlock : RichTextLabel
         // new_sb.BgColor = Color.FromHsv(0.5f, 0.5f, 0.5f);
         // AddThemeStyleboxOverride("normal", new_sb);
 
-        if (Params.Half == Sheet.TextHalf.Left)
+        if (Params.Half == TextConfig.TextHalf.Left)
         {
             Text = "[right]" + Params.Text + "[/right]";
         }

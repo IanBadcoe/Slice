@@ -1,7 +1,19 @@
-[gd_scene load_steps=2 format=3 uid="uid://sesho6b6fxld"]
+[gd_scene load_steps=2 format=3 uid="uid://djqrt7udt40qi"]
 
 [ext_resource type="PackedScene" uid="uid://soxrrjcw4wyn" path="res://Sheet.tscn" id="1_jli0a"]
 
-[node name="Node2D" type="Node2D"]
+[node name="Main" type="Node2D"]
 
 [node name="Sheet" parent="." instance=ExtResource("1_jli0a")]
+
+[node name="Sheet2" parent="." instance=ExtResource("1_jli0a")]
+offset_left = 453.0
+offset_top = 109.0
+offset_right = 953.0
+offset_bottom = 609.0
+
+[node name="Sheet3" parent="." instance=ExtResource("1_jli0a")]
+offset_left = 251.0
+offset_top = 373.0
+offset_right = 751.0
+offset_bottom = 873.0
