@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Godot;
 using TextConfig;
@@ -23,7 +24,7 @@ public partial class TextBlock : RichTextLabel
         }
     }
 
-    public Vector2[] SnapPoints
+    public SnapPoint[] SnapPoints
     {
         get;
         private set;
@@ -78,7 +79,7 @@ public partial class TextBlock : RichTextLabel
     {
         int num_snap_points = (int)(Size.Y / LineHeight);
 
-        SnapPoints = new Vector2[num_snap_points];
+        SnapPoints = new SnapPoint[num_snap_points];
 
         float x_pos = 0;
         float y_start = LineHeight / 2;
@@ -97,64 +98,25 @@ public partial class TextBlock : RichTextLabel
 
         for(int i = 0; i < num_snap_points; i++)
         {
-            SnapPoints[i] = new Vector2(x_pos, y_start + i * LineHeight);
+            SnapPoints[i] = new SnapPoint{
+                Point = new Vector2(x_pos, y_start + i * LineHeight),
+                Angle = 0                // we're none of us rotated, relative to ourself, but this gets transformed
+            };
         }
     }
 
-    public Vector2[] GetTransformedSnapPoints()
+    public IEnumerable<SnapPoint> GetTransformedSnapPoints()
     {
-        return SnapPoints.Select(x =>
+        if (SnapPoints == null)
         {
-            return GetGlobalTransform() * x;
-        }
-        ).ToArray();
-    }
-
-    // debug draw
-    // vvvvvvvvvv
-    public override void _Draw()
-    {
-        if (!EnableDebugDraw || SnapPoints == null)
-        {
-            return;
+            return null;
         }
 
-        bool is_left = Params.Half == TextHalf.Left;
-
-        Vector2 offset1 = new Vector2(-7, 5);
-        Vector2 offset2 = new Vector2(-7, -5);
-        Vector2 offset3 = new Vector2(-14, 0);
-
-        Color col =  is_left ? new Color(1,0,0) : new Color(0, 1, 0);
-
-        foreach(var point in SnapPoints)
-        {
-            // an arrow
-            //                (side1)
-            //                     \
-            //  (back) -------------- (point)
-            //                     /
-            //                (side2)
-            Vector2 side1;
-            Vector2 side2;
-            Vector2 back;
-
-            if (is_left)
+        return SnapPoints.Select(
+            x =>
             {
-                side1 = point + offset1;
-                side2 = point + offset2;
-                back = point + offset3;
+                return GetGlobalTransform() * x;
             }
-            else
-            {
-                side1 = point - offset1;
-                side2 = point - offset2;
-                back = point - offset3;
-            }
-
-            DrawLine(point, side1, col, 4);
-            DrawLine(point, side2, col, 4);
-            DrawLine(point, back, col, 4);
-        }
+        );
     }
 }

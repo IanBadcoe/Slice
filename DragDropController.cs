@@ -158,6 +158,8 @@ public partial class DragDropController : Node2D
             DragSheet = MouseFocusSheet;
 
             LastMousePosition = GetViewport().GetMousePosition();
+
+            BeginSnapping();
         }
     }
 
@@ -167,6 +169,8 @@ public partial class DragDropController : Node2D
         {
             Mode = DragMode.None;
             DragSheet = null;
+
+            EndSnapping();
         }
     }
 
@@ -178,6 +182,8 @@ public partial class DragDropController : Node2D
             DragSheet = MouseFocusSheet;
 
             LastMousePosition = GetViewport().GetMousePosition();
+
+            BeginSnapping();
         }
     }
 
@@ -187,6 +193,8 @@ public partial class DragDropController : Node2D
         {
             Mode = DragMode.None;
             DragSheet = null;
+
+            EndSnapping();
         }
     }
 

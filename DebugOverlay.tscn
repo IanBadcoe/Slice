@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://cuh4wmjvjx21r"]
+
+[ext_resource type="Script" path="res://DebugOverlay.cs" id="1_lbm8o"]
+
+[node name="DebugOverlay" type="Panel"]
+z_index = 10
+script = ExtResource("1_lbm8o")

@@ -1,8 +1,11 @@
-[gd_scene load_steps=2 format=3 uid="uid://djqrt7udt40qi"]
+[gd_scene load_steps=3 format=3 uid="uid://djqrt7udt40qi"]
 
 [ext_resource type="PackedScene" uid="uid://soxrrjcw4wyn" path="res://Sheet.tscn" id="1_jli0a"]
+[ext_resource type="PackedScene" uid="uid://cuh4wmjvjx21r" path="res://DebugOverlay.tscn" id="1_jqkox"]
 
 [node name="Main" type="Node2D"]
+
+[node name="DebugOverlay" parent="." instance=ExtResource("1_jqkox")]
 
 [node name="Sheet" parent="." instance=ExtResource("1_jli0a")]
 
