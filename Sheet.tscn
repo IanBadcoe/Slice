@@ -7,10 +7,9 @@ border_color = Color(0.93, 0.93, 0.93, 1)
 
 [node name="Sheet" type="Panel"]
 clip_contents = true
-custom_minimum_size = Vector2(500, 500)
 layout_direction = 2
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 500.0
+offset_bottom = 500.0
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_5p0u6")
 script = ExtResource("1_w6l83")

@@ -1,10 +1,17 @@
 using Godot;
 using System.Diagnostics;
 using TextConfig;
+using System.Linq;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 
 public partial class DragDropController : Node2D
 {
-    const float RotationSpeedConst = 100.0f;   ///< degress/s
+    const float RotationSpeedConst = 100.0f;    ///< degress/s
+    const float SnapDistance = 20f;             ///< screen units
+
+    public Main Main;
 
     enum DragMode
     {
@@ -24,6 +31,29 @@ public partial class DragDropController : Node2D
     bool SawANonDragRotateThisFrame = false;
 
     Vector2 LastMousePosition;
+
+    SnapPoint[] StaticLSnaps;
+    SnapPoint[] StaticRSnaps;
+
+    public Vector2 DragPosition
+    {
+        get;
+        private set;
+    }
+
+    public float DragRotation
+    {
+        get;
+        private set;
+    }
+
+    public Transform2D DragTransform
+    {
+        get
+        {
+            return new Transform2D(DragRotation, DragPosition);
+        }
+    }
 
     // Singleton Instance
     // vvvvvvvvvvvvvvvvvv
@@ -66,8 +96,10 @@ public partial class DragDropController : Node2D
         if (@event is InputEventMouseMotion mouse_motion)
         {
             Vector2 delta = mouse_motion.Position - LastMousePosition;
-            DragSheet.Position += delta * DragSpeedFactor;
+            DragPosition += delta * DragSpeedFactor;
             LastMousePosition = mouse_motion.Position;
+
+            HandleSnapping();
         }
     }
 
@@ -76,8 +108,10 @@ public partial class DragDropController : Node2D
         if (@event is InputEventMouseMotion mouse_motion)
         {
             float delta = mouse_motion.Position.Y - LastMousePosition.Y;
-            DragSheet.RotationDegrees += delta * DragSpeedFactor;
+            DragRotation += delta * DragSpeedFactor / 180 * MathF.PI;
             LastMousePosition = mouse_motion.Position;
+
+            HandleSnapping();
         }
     }
 
@@ -92,11 +126,21 @@ public partial class DragDropController : Node2D
     // --- DragSheet <-- the one we are dragging
     // -- and when other classes query whether they have focus, the latter overrides the former, if it is set
 
-    public bool TryGetMouseFocus(Sheet sheet)
+    public void TryGetMouseFocus(Sheet sheet)
     {
+        if (MouseFocusSheet == sheet)
+        {
+            return;
+        }
+
         MouseFocusSheet = sheet;
 
-        return DoIHaveFocus(sheet);
+        if (DoIHaveFocus(sheet))
+        {
+            Debug.Print("Set DragPosition");
+            DragPosition = sheet.Centre;
+            DragRotation = sheet.Rotation;
+        }
     }
 
     public void LoseMouseFocus(Sheet sheet)
@@ -203,7 +247,7 @@ public partial class DragDropController : Node2D
     // vvvvvvvvvvvvvvvvvvvvvvv
     public void RotateSheet(float delta)
     {
-        FocusSheet.RotationDegrees += RotationSpeed * (float)delta;
+        DragRotation += delta * DragSpeedFactor / 180 * MathF.PI * 50;
 
         if (!SawANonDragRotate)
         {
@@ -212,6 +256,8 @@ public partial class DragDropController : Node2D
 
         SawANonDragRotateThisFrame = true;
         SawANonDragRotate = true;
+
+        HandleSnapping();
     }
 
     public override void _Process(double delta)
@@ -231,7 +277,90 @@ public partial class DragDropController : Node2D
     // vvvvvvvv
     private void BeginSnapping()
     {
-        Debug.Print("BeginSnapping");
+        StaticRSnaps = Main.GetChildren()
+            .OfType<Sheet>()
+            .Where(x => x != FocusSheet)
+            .Select(x => x.GetTransformedSnapPoints(TextHalf.Right))
+            .Where(x => x != null)
+            .SelectMany(x => x)
+            .ToArray();
+
+        StaticLSnaps = Main.GetChildren()
+            .OfType<Sheet>()
+            .Where(x => x != FocusSheet)
+            .Select(x => x.GetTransformedSnapPoints(TextHalf.Left))
+            .Where(x => x != null)
+            .SelectMany(x => x)
+            .ToArray();
+    }
+
+    private void HandleSnapping()
+    {
+        IEnumerable<SnapPoint> MovingLSnaps = FocusSheet.GetTransformedSnapPoints(TextHalf.Left, DragTransform);
+        IEnumerable<SnapPoint> MovingRSnaps = FocusSheet.GetTransformedSnapPoints(TextHalf.Right, DragTransform);
+
+        if (MovingLSnaps != null && StaticRSnaps != null)
+        {
+            foreach(SnapPoint mov in MovingLSnaps)
+            {
+                foreach(SnapPoint stat in StaticRSnaps)
+                {
+                    if (Mathf.Abs(mov.Position.X - stat.Position.X) < SnapDistance
+                        && Mathf.Abs(mov.Position.Y - stat.Position.Y) < SnapDistance)
+                    {
+                        BringSheetToSnapPoint(stat, FocusSheet, mov.TextBlock, mov.TextBlock.SnapPoints[mov.IndexInTextBlock]);
+
+                        return;
+                    }
+                }
+            }
+        }
+
+        if (MovingRSnaps != null && StaticLSnaps != null)
+        {
+            foreach(SnapPoint mov in MovingRSnaps)
+            {
+                foreach(SnapPoint stat in StaticLSnaps)
+                {
+                    if (Mathf.Abs(mov.Position.X - stat.Position.X) < SnapDistance
+                        && Mathf.Abs(mov.Position.Y - stat.Position.Y) < SnapDistance)
+                    {
+                        BringSheetToSnapPoint(stat, FocusSheet, mov.TextBlock, mov.TextBlock.SnapPoints[mov.IndexInTextBlock]);
+
+                        return;
+                    }
+                }
+            }
+        }
+
+        Vector2 pivot_offset = FocusSheet.PivotOffset;
+
+        FocusSheet.Position = DragPosition - pivot_offset;
+
+        FocusSheet.PivotOffset = pivot_offset;
+
+        FocusSheet.Rotation = DragTransform.Rotation;
+    }
+
+    private void BringSheetToSnapPoint(SnapPoint still_snap_point, Sheet moving_s, TextBlock moving_tb, SnapPoint moving_sp)
+    {
+        SnapPoint moving_sp_world_pos_pre_rotate = moving_tb.GetGlobalTransform() * moving_sp;
+
+        // rotate the sheet by the difference between the current rotation of the moving sp
+        // and the rotation of the still sp that it wants to have
+        moving_s.Rotation += still_snap_point.Rotation - moving_sp_world_pos_pre_rotate.Rotation;
+
+        // fixing the rotation can move the snap-point
+        SnapPoint moving_sp_world_pos_post_rotate = moving_tb.GetGlobalTransform() * moving_sp;
+
+        // move the moving-sheet by the error between where its current position puts the moving_sp
+        // and the position of the still sp where it wants to be
+        moving_s.Position += still_snap_point.Position - moving_sp_world_pos_post_rotate.Position;
+
+        // don't, as it makes it impossible to back away from an accidental snap
+        // // move the dran snap-points to the new position
+        // DragPosition = moving_s.Centre;
+        // DragRotation = moving_s.Rotation;
     }
 
     private void EndSnapping()

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Godot;
 using TextConfig;
@@ -98,25 +99,52 @@ public partial class TextBlock : RichTextLabel
 
         for(int i = 0; i < num_snap_points; i++)
         {
-            SnapPoints[i] = new SnapPoint{
-                Point = new Vector2(x_pos, y_start + i * LineHeight),
-                Angle = 0                // we're none of us rotated, relative to ourself, but this gets transformed
-            };
+            SnapPoints[i] = new SnapPoint(
+                new Vector2(x_pos, y_start + i * LineHeight),
+                0,
+                i,
+                this
+            );
         }
     }
 
-    public IEnumerable<SnapPoint> GetTransformedSnapPoints()
+    // If override_transform is given, so must centre and vide-versa
+    //
+    // without those, just position our snap-points relative to our parent, as normal
+    //
+    // with them, replace the parent-transform with override_transform
+    // e.g. calculates the snap-point position as if the sheet we were in was located
+    // at override_transform, rather than it's real current position
+    //
+    // so what we need to do is first apply our local transform, and then the override
+    //
+    // and in this case, because our pivot_offset is in the centre, the override_transform will
+    // have that added in, so we need to subtract it off here...
+    public IEnumerable<SnapPoint> GetTransformedSnapPoints(Transform2D? override_transform = null, Vector2? centre = null)
     {
         if (SnapPoints == null)
         {
             return null;
         }
 
-        return SnapPoints.Select(
-            x =>
-            {
-                return GetGlobalTransform() * x;
-            }
-        );
+        if (override_transform.HasValue)
+        {
+            Debug.Assert(centre.HasValue);
+            Transform2D local_trans = GetTransform();
+
+            return SnapPoints.Select(
+                x => override_transform.Value * ((local_trans * x) - centre.Value)
+            );
+        }
+        else
+        {
+            Debug.Assert(!centre.HasValue);
+            return SnapPoints.Select(
+                x =>
+                {
+                    return GetGlobalTransform() * x;
+                }
+            );
+        }
     }
 }

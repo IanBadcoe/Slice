@@ -11,6 +11,8 @@ public partial class Sheet : Panel
 
     DragDropController DDC;
 
+    public Vector2 Centre => GetGlobalTransform() * PivotOffset;
+
     // adding half texts
     // vvvvvvvvvvvvvvvvv
 
@@ -176,12 +178,14 @@ public partial class Sheet : Panel
     // SnapPoints
     // vvvvvvvvvv
 
-    public SnapPoint[] GetTransformedSnapPoints(TextHalf half)
+    public SnapPoint[] GetTransformedSnapPoints(TextHalf half, Transform2D? override_transform = null)
     {
+        Vector2? pivot = override_transform.HasValue ? PivotOffset : null;
+
         return GetChildren()
             .OfType<TextBlock>()
             .Where(x => x.Params.Half == half)
-            .Select(x => x.GetTransformedSnapPoints())
+            .Select(x => x.GetTransformedSnapPoints(override_transform, pivot))
             .Where(x => x != null)
             .SelectMany(x => x)
             .ToArray();
@@ -217,7 +221,7 @@ public partial class Sheet : Panel
         {
             var Params = new TextBlockParams
             {
-                Text = "1. [b]left[/b]\n[i]left[/i]",
+                Text = "xxx",//"1. [b]left[/b]\n[i]left[/i]",
                 Side = SheetSide.Right,
                 Half = TextHalf.Left,
                 HalfPosition = 100
@@ -241,7 +245,7 @@ public partial class Sheet : Panel
         {
             var Params = new TextBlockParams
             {
-                Text = "2. left",
+                Text = "2. [u]left[/u]",
                 Side = SheetSide.Top,
                 Half = TextHalf.Left,
                 HalfPosition = 100
@@ -277,7 +281,7 @@ public partial class Sheet : Panel
         {
             var Params = new TextBlockParams
             {
-                Text = "3. left\nleft",
+                Text = "3. [color=aqua]left[/color]\n[color=red]left[/color]",
                 Side = SheetSide.Left,
                 Half = TextHalf.Left,
                 HalfPosition = 100
