@@ -1,0 +1,30 @@
+{
+    "Name": "sheet2",
+    "Size": {"X": 500.0,"Y": 500.0},
+    "Texts": {
+        "TheWay": {
+            "Side": "Right",
+            "Half": "Left",
+            "Text": "you have caged\nand bound me\nI\nI cannot even ask you to",
+            "HalfPosition": 300.0
+        },
+        "TheKeeper": {
+            "Side": "Top",
+            "Half": "Left",
+            "Text": "you have to hate\nwe learn\nwe fear we\nyou would not",
+            "HalfPosition": 100.0
+        },
+        "TheLion": {
+            "Side": "Bottom",
+            "Half": "Left",
+            "Text": "the tiger you are and\nchoosing\njudging the moment I\nthere is a burden to",
+            "HalfPosition": 400.0
+        },
+        "MeIn": {
+            "Side": "Right",
+            "Half": "Left",
+            "Text": "do not love\nI need you\nyou omit the bits you\nI melt as you",
+            "HalfPosition": 100.0
+        }
+    }
+}

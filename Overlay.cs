@@ -3,19 +3,27 @@ using System;
 using System.Linq;
 using TextConfig;
 
-public partial class DebugOverlay : Panel
+public partial class Overlay : Panel
 {
-    bool EnableDebugDraw = true;
+    bool EnableOverlay = true;
 
     Sheet LastFocusSheet;
 
     public Main Main;
 
-    float timer = 0;
-
     public override void _Process(double delta)
     {
-        if (!EnableDebugDraw)
+        if (Main == null)
+        {
+            Main = GetNodeOrNull<Main>("/root/Main");
+        }
+
+        if (Main == null)
+        {
+            return;
+        }
+
+        if (!EnableOverlay)
         {
             return;
         }
@@ -37,7 +45,7 @@ public partial class DebugOverlay : Panel
             return;
         }
 
-        if (!EnableDebugDraw || DragDropController.Instance.FocusSheet == null)
+        if (!EnableOverlay || DragDropController.Instance.FocusSheet == null)
         {
             return;
         }

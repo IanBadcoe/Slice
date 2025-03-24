@@ -16,7 +16,7 @@ public partial class Sheet : Panel
     // adding half texts
     // vvvvvvvvvvvvvvvvv
 
-    public void AddTextBlock(TextBlockParams Params)
+    public void AddTextBlock(TextParams Params)
     {
         var new_tb = TextBlockScene.Instantiate<TextBlock>();
 
@@ -26,7 +26,7 @@ public partial class Sheet : Panel
         AddChild(new_tb);
     }
 
-    public void PostLayout(TextBlock text_block, TextBlockParams @params)
+    public void PostLayout(TextBlock text_block, TextParams @params)
     {
         int rot_in_right_angles = 0;
 
@@ -218,126 +218,126 @@ public partial class Sheet : Panel
         // vvvvvvvvv
         StyleBox.BgColor = Color.FromHsv((float)Random.Shared.NextDouble(), 0.5f, 0.5f);
 
-        {
-            var Params = new TextBlockParams
-            {
-                Text = "xxx",//"1. [b]left[/b]\n[i]left[/i]",
-                Side = SheetSide.Right,
-                Half = TextHalf.Left,
-                HalfPosition = 100
-            };
+        // {
+        //     var Params = new TextParams
+        //     {
+        //         Text = "xxx",//"1. [b]left[/b]\n[i]left[/i]",
+        //         Side = SheetSide.Right,
+        //         Half = TextHalf.Left,
+        //         HalfPosition = 100
+        //     };
 
-            AddTextBlock(Params);
-        }
+        //     AddTextBlock(Params);
+        // }
 
-        {
-            var Params = new TextBlockParams
-            {
-                Text = "[b][i]right[/i][/b]\nright .1",
-                Side = SheetSide.Left,
-                Half = TextHalf.Right,
-                HalfPosition = 400
-            };
+        // {
+        //     var Params = new TextParams
+        //     {
+        //         Text = "[b][i]right[/i][/b]\nright .1",
+        //         Side = SheetSide.Left,
+        //         Half = TextHalf.Right,
+        //         HalfPosition = 400
+        //     };
 
-            AddTextBlock(Params);
-        }
+        //     AddTextBlock(Params);
+        // }
 
-        {
-            var Params = new TextBlockParams
-            {
-                Text = "2. [u]left[/u]",
-                Side = SheetSide.Top,
-                Half = TextHalf.Left,
-                HalfPosition = 100
-            };
+        // {
+        //     var Params = new TextParams
+        //     {
+        //         Text = "2. [u]left[/u]",
+        //         Side = SheetSide.Top,
+        //         Half = TextHalf.Left,
+        //         HalfPosition = 100
+        //     };
 
-            AddTextBlock(Params);
-        }
+        //     AddTextBlock(Params);
+        // }
 
-        {
-            var Params = new TextBlockParams
-            {
-                Text = "right\nright .2\nright",
-                Side = SheetSide.Bottom,
-                Half = TextHalf.Right,
-                HalfPosition = 400
-            };
+        // {
+        //     var Params = new TextParams
+        //     {
+        //         Text = "right\nright .2\nright",
+        //         Side = SheetSide.Bottom,
+        //         Half = TextHalf.Right,
+        //         HalfPosition = 400
+        //     };
 
-            AddTextBlock(Params);
-        }
+        //     AddTextBlock(Params);
+        // }
 
-        {
-            var Params = new TextBlockParams
-            {
-                Text = "right\nright .3",
-                Side = SheetSide.Right,
-                Half = TextHalf.Right,
-                HalfPosition = 400
-            };
+        // {
+        //     var Params = new TextParams
+        //     {
+        //         Text = "right\nright .3",
+        //         Side = SheetSide.Right,
+        //         Half = TextHalf.Right,
+        //         HalfPosition = 400
+        //     };
 
-            AddTextBlock(Params);
-        }
+        //     AddTextBlock(Params);
+        // }
 
-        {
-            var Params = new TextBlockParams
-            {
-                Text = "3. [color=aqua]left[/color]\n[color=red]left[/color]",
-                Side = SheetSide.Left,
-                Half = TextHalf.Left,
-                HalfPosition = 100
-            };
+        // {
+        //     var Params = new TextParams
+        //     {
+        //         Text = "3. [color=aqua]left[/color]\n[color=red]left[/color]",
+        //         Side = SheetSide.Left,
+        //         Half = TextHalf.Left,
+        //         HalfPosition = 100
+        //     };
 
-            AddTextBlock(Params);
-        }
+        //     AddTextBlock(Params);
+        // }
 
-        {
-            var Params = new TextBlockParams
-            {
-                Text = "right\nright .4",
-                Side = SheetSide.Top,
-                Half = TextHalf.Right,
-                HalfPosition = 400
-            };
+        // {
+        //     var Params = new TextParams
+        //     {
+        //         Text = "right\nright .4",
+        //         Side = SheetSide.Top,
+        //         Half = TextHalf.Right,
+        //         HalfPosition = 400
+        //     };
 
-            AddTextBlock(Params);
-        }
+        //     AddTextBlock(Params);
+        // }
 
-        {
-            var Params = new TextBlockParams
-            {
-                Text = "4. left\nleft",
-                Side = SheetSide.Bottom,
-                Half = TextHalf.Left,
-                HalfPosition = 100
-            };
+        // {
+        //     var Params = new TextParams
+        //     {
+        //         Text = "4. left\nleft",
+        //         Side = SheetSide.Bottom,
+        //         Half = TextHalf.Left,
+        //         HalfPosition = 100
+        //     };
 
-            AddTextBlock(Params);
-        }
+        //     AddTextBlock(Params);
+        // }
 
-        {
-            var Params = new TextBlockParams
-            {
-                Text = "right\nright .5",
-                Side = SheetSide.Internal,
-                Half = TextHalf.Right,
-                Position = new Vector2(250, 250),
-                Rotation = 135
-            };
+        // {
+        //     var Params = new TextParams
+        //     {
+        //         Text = "right\nright .5",
+        //         Side = SheetSide.Internal,
+        //         Half = TextHalf.Right,
+        //         Position = new Vector2(250, 250),
+        //         Rotation = 135
+        //     };
 
-            AddTextBlock(Params);
-        }
+        //     AddTextBlock(Params);
+        // }
 
-        {
-            var Params = new TextBlockParams
-            {
-                Text = "5. left\nleft",
-                Side = SheetSide.Internal,
-                Half = TextHalf.Left,
-                Position = new Vector2(250, 250),
-                Rotation = 135
-            };
+        // {
+        //     var Params = new TextParams
+        //     {
+        //         Text = "5. left\nleft",
+        //         Side = SheetSide.Internal,
+        //         Half = TextHalf.Left,
+        //         Position = new Vector2(250, 250),
+        //         Rotation = 135
+        //     };
 
-            AddTextBlock(Params);
-        }
+        //     AddTextBlock(Params);
+        // }
     }
 }

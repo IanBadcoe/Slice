@@ -11,7 +11,7 @@ public partial class TextBlock : RichTextLabel
 
     bool IsLaidout = false;
 
-    TextBlockParams InnerParams;
+    TextParams InnerParams;
 
     bool EnableDebugDrawInner = false;
 
@@ -37,7 +37,7 @@ public partial class TextBlock : RichTextLabel
         set;
     }
 
-    public TextBlockParams Params
+    public TextParams Params
     {
         get { return InnerParams; }
         set { InnerParams = value; }
@@ -45,9 +45,9 @@ public partial class TextBlock : RichTextLabel
 
     public override void _Ready()
     {
-        var new_sb = new StyleBoxFlat();
-        new_sb.BgColor = Color.FromHsv(0.5f, 0.5f, 0.5f);
-        AddThemeStyleboxOverride("normal", new_sb);
+        // var new_sb = new StyleBoxFlat();
+        // new_sb.BgColor = Color.FromHsv(0.5f, 0.5f, 0.5f);
+        // AddThemeStyleboxOverride("normal", new_sb);
 
         if (Params.Half == TextConfig.TextHalf.Left)
         {

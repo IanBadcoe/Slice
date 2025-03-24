@@ -3,7 +3,6 @@ using System.Diagnostics;
 using TextConfig;
 using System.Linq;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 
 public partial class DragDropController : Node2D
@@ -262,6 +261,16 @@ public partial class DragDropController : Node2D
 
     public override void _Process(double delta)
     {
+        if (Main == null)
+        {
+            Main = GetNodeOrNull<Main>("/root/Main");
+        }
+
+        if (Main == null)
+        {
+            return;
+        }
+
         if (SawANonDragRotate)
         {
             if (!SawANonDragRotateThisFrame)
@@ -277,6 +286,11 @@ public partial class DragDropController : Node2D
     // vvvvvvvv
     private void BeginSnapping()
     {
+        if (Main == null)
+        {
+            return;
+        }
+
         StaticRSnaps = Main.GetChildren()
             .OfType<Sheet>()
             .Where(x => x != FocusSheet)

@@ -1,22 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://djqrt7udt40qi"]
+[gd_scene load_steps=3 format=3 uid="uid://djqrt7udt40qi"]
 
-[ext_resource type="Script" path="res://Main.cs" id="1_4mxwo"]
-[ext_resource type="PackedScene" uid="uid://soxrrjcw4wyn" path="res://Sheet.tscn" id="1_jli0a"]
-[ext_resource type="PackedScene" uid="uid://cuh4wmjvjx21r" path="res://DebugOverlay.tscn" id="1_jqkox"]
+[ext_resource type="Script" path="res://Main.cs" id="1_3trfk"]
+[ext_resource type="PackedScene" uid="uid://cuh4wmjvjx21r" path="res://Overlay.tscn" id="1_jqkox"]
 
 [node name="Main" type="Node2D"]
-script = ExtResource("1_4mxwo")
+position = Vector2(0, 1)
+script = ExtResource("1_3trfk")
 
-[node name="Sheet" parent="." instance=ExtResource("1_jli0a")]
-offset_left = 270.0
-offset_top = 115.0
-offset_right = 770.0
-offset_bottom = 615.0
-
-[node name="Sheet3" parent="." instance=ExtResource("1_jli0a")]
-offset_left = 945.0
-offset_top = 392.0
-offset_right = 1445.0
-offset_bottom = 892.0
-
-[node name="DebugOverlay" parent="." instance=ExtResource("1_jqkox")]
+[node name="Overlay" parent="." instance=ExtResource("1_jqkox")]
