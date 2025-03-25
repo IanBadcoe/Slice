@@ -1,0 +1,9 @@
+{
+    "Name": "sheet set 1",
+    "Sheets": [
+        "Strip1.json",
+        "Strip2.json",
+        "Strip3.json",
+        "Strip4.json"
+    ]
+}

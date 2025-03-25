@@ -1,0 +1,12 @@
+{
+    "Name": "strip1",
+    "Size": {"X": 200.0,"Y": 600.0},
+    "Texts": {
+        "TheWay": {
+            "Side": "Span",
+            "Half": "Both",
+            "Text": "a sort of clock\na ticking in the head\na sort of game\nthe life you thought\n\na song not sung\na cause not lost\na thought\nan edge",
+            "HalfPosition": 500.0
+        }
+    }
+}

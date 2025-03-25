@@ -13,14 +13,16 @@ namespace TextConfig
         Bottom,
         Left,
         Top,
-        Internal
+        Internal,
+        Span
     }
 
     [JsonConverter(typeof(StringEnumConverter))]
     public enum TextHalf
     {
         Left,
-        Right
+        Right,
+        Both
     }
 
     public class TextParams

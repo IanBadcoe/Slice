@@ -9,16 +9,9 @@ public partial class Overlay : Panel
 
     Sheet LastFocusSheet;
 
-    public Main Main;
-
     public override void _Process(double delta)
     {
-        if (Main == null)
-        {
-            Main = GetNodeOrNull<Main>("/root/Main");
-        }
-
-        if (Main == null)
+        if (Main.Instance == null)
         {
             return;
         }
@@ -40,7 +33,7 @@ public partial class Overlay : Panel
     // vvvvvvvvvv
     public override void _Draw()
     {
-        if (Main == null)
+        if (Main.Instance == null)
         {
             return;
         }
@@ -50,7 +43,7 @@ public partial class Overlay : Panel
             return;
         }
 
-        foreach(Sheet sheet in Main.GetChildren()
+        foreach(Sheet sheet in Main.Instance.GetChildren()
                     .OfType<Sheet>()
                     .Where(x => x != DragDropController.Instance.FocusSheet))
         {

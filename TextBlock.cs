@@ -53,6 +53,10 @@ public partial class TextBlock : RichTextLabel
         {
             Text = "[right]" + Params.Text + "[/right]";
         }
+        else if (Params.Half == TextHalf.Both)
+        {
+            Text = "[fill]" + Params.Text + "[/fill]";
+        }
         else
         {
             Text = Params.Text;
@@ -80,14 +84,38 @@ public partial class TextBlock : RichTextLabel
     {
         int num_snap_points = (int)(Size.Y / LineHeight);
 
-        SnapPoints = new SnapPoint[num_snap_points];
+        if (Params.Half == TextHalf.Both)
+        {
+            SnapPoints = new SnapPoint[num_snap_points * 2];
+        }
+        else
+        {
+            SnapPoints = new SnapPoint[num_snap_points];
+        }
 
-        float x_pos = 0;
+        // if we are the left-half of a text, then we dock something else to the right, and vice-versa
+        // or, both...
+        switch(Params.Half)
+        {
+            case TextHalf.Left:
+                StoreSnapPoints(Size.X + HalfSpace, 0, num_snap_points);
+                break;
+            case TextHalf.Right:
+                StoreSnapPoints(-HalfSpace, 0, num_snap_points);
+                break;
+            case TextHalf.Both:
+                StoreSnapPoints(Size.X + HalfSpace, 0, num_snap_points);
+                StoreSnapPoints(-HalfSpace, num_snap_points, num_snap_points);
+                break;
+        }
+    }
+
+    void StoreSnapPoints(float x_pos, int offset, int num_snap_points)
+    {
         float y_start = LineHeight / 2;
 
         switch(Params.Half)
         {
-            // if we are the left-half of a text, then we dock something else to the right, and vice-versa
             case TextHalf.Left:
                 x_pos = Size.X + HalfSpace;
                 break;
@@ -99,13 +127,19 @@ public partial class TextBlock : RichTextLabel
 
         for(int i = 0; i < num_snap_points; i++)
         {
-            SnapPoints[i] = new SnapPoint(
-                new Vector2(x_pos, y_start + i * LineHeight),
-                0,
-                i,
-                this
-            );
+            SnapPoints[i + offset] = new SnapPoint(new Vector2(x_pos, y_start + i * LineHeight), 0, i + offset, this);
         }
+    }
+
+    public bool AnySnapPointsFor(TextHalf half)
+    {
+        // we have some points to return if either:
+        // - we were asked for boths
+        // - we have boths
+        // - we were asked for what we have
+        return half == TextHalf.Both
+            || Params.Half == TextHalf.Both
+            || Params.Half == half;
     }
 
     // If override_transform is given, so must centre and vide-versa
@@ -120,11 +154,39 @@ public partial class TextBlock : RichTextLabel
     //
     // and in this case, because our pivot_offset is in the centre, the override_transform will
     // have that added in, so we need to subtract it off here...
-    public IEnumerable<SnapPoint> GetTransformedSnapPoints(Transform2D? override_transform = null, Vector2? centre = null)
+    //
+    //
+    // see comment on AnySnapPointsFor for whether "half" will selected anything in any given case
+    public IEnumerable<SnapPoint> GetTransformedSnapPoints(TextHalf half, Transform2D? override_transform = null, Vector2? centre = null)
     {
         if (SnapPoints == null)
         {
             return null;
+        }
+
+        int skip = 0;
+        int take = SnapPoints.Count();
+
+        // we have either Left or Right or Both sorts of snap-point (Params.Half)
+        // and we are asked for either Left or Right or Both (half)
+        //
+        // if what we are asked for matches what we have, we can just return everything, OR,
+        // if we are asked for Both, then everything matches and again we can just return everything
+        if (half != Params.Half && half != TextHalf.Both)
+        {
+            // otherwise...
+            // if they don't match, and we don't have "Both" then nothing matches
+            if (Params.Half != TextHalf.Both)
+            {
+                return null;
+            }
+
+            // otherwise othersie...
+            // we have Both and we were asked for either Left or Right
+            // so we return the matching half of our array
+            // (we stored them in the order Left, Right)
+            take /= 2;
+            skip = half == TextHalf.Left ? 0 : take;
         }
 
         if (override_transform.HasValue)
@@ -132,19 +194,18 @@ public partial class TextBlock : RichTextLabel
             Debug.Assert(centre.HasValue);
             Transform2D local_trans = GetTransform();
 
-            return SnapPoints.Select(
-                x => override_transform.Value * ((local_trans * x) - centre.Value)
-            );
+            return SnapPoints
+                .Skip(skip)
+                .Take(take)
+                .Select(x => override_transform.Value * ((local_trans * x) - centre.Value));
         }
         else
         {
             Debug.Assert(!centre.HasValue);
-            return SnapPoints.Select(
-                x =>
-                {
-                    return GetGlobalTransform() * x;
-                }
-            );
+            return SnapPoints
+                .Skip(skip)
+                .Take(take)
+                .Select(x => GetGlobalTransform() * x);
         }
     }
 }

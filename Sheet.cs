@@ -54,11 +54,22 @@ public partial class Sheet : Panel
             case SheetSide.Internal:
                 text_block.Position = @params.Position;
                 break;
+
+            case SheetSide.Span:
+                text_block.Position = new Vector2(TextBlock.HalfSpace, Size.Y - @params.HalfPosition);
+                // we have fit to this once, giving us the right height
+                // but now we override the width so we span the sheet
+                text_block.FitContent = false;
+                text_block.Size = new Vector2(Size.X - TextBlock.HalfSpace * 2, text_block.Size.Y);
+                // rotate as if for the left
+                rot_in_right_angles = 2;
+                break;
         }
 
         if (@params.Side != SheetSide.Internal)
         {
-            if (@params.Half == TextHalf.Right)
+            if (@params.Half == TextHalf.Right
+                || @params.Half == TextHalf.Both)
             {
                 rot_in_right_angles += 2;
             }
@@ -184,8 +195,8 @@ public partial class Sheet : Panel
 
         return GetChildren()
             .OfType<TextBlock>()
-            .Where(x => x.Params.Half == half)
-            .Select(x => x.GetTransformedSnapPoints(override_transform, pivot))
+            .Where(x => x.AnySnapPointsFor(half))
+            .Select(x => x.GetTransformedSnapPoints(half, override_transform, pivot))
             .Where(x => x != null)
             .SelectMany(x => x)
             .ToArray();

@@ -51,6 +51,8 @@ public partial class Loader : Node
             sheet.AddTextBlock(entry.Value);
         }
 
+        sheet.Size = config.Size;
+
         return sheet;
     }
 
@@ -81,8 +83,6 @@ public partial class Loader : Node
     {
         JsonResourceBeingLoaded = resource_path;
 
-        Node root = GetNode("/root");
-
         GetTree().ChangeSceneToFile("res://Main.tscn");
     }
 
@@ -94,5 +94,10 @@ public partial class Loader : Node
 
             JsonResourceBeingLoaded = null;
         }
+    }
+
+    public void BackToMenu()
+    {
+        GetTree().ChangeSceneToFile("res://Menu.tscn");
     }
 }

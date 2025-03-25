@@ -10,8 +10,6 @@ public partial class DragDropController : Node2D
     const float RotationSpeedConst = 100.0f;    ///< degress/s
     const float SnapDistance = 20f;             ///< screen units
 
-    public Main Main;
-
     enum DragMode
     {
         None,
@@ -261,12 +259,7 @@ public partial class DragDropController : Node2D
 
     public override void _Process(double delta)
     {
-        if (Main == null)
-        {
-            Main = GetNodeOrNull<Main>("/root/Main");
-        }
-
-        if (Main == null)
+        if (Main.Instance == null)
         {
             return;
         }
@@ -286,12 +279,12 @@ public partial class DragDropController : Node2D
     // vvvvvvvv
     private void BeginSnapping()
     {
-        if (Main == null)
+        if (Main.Instance == null)
         {
             return;
         }
 
-        StaticRSnaps = Main.GetChildren()
+        StaticRSnaps = Main.Instance.GetChildren()
             .OfType<Sheet>()
             .Where(x => x != FocusSheet)
             .Select(x => x.GetTransformedSnapPoints(TextHalf.Right))
@@ -299,7 +292,7 @@ public partial class DragDropController : Node2D
             .SelectMany(x => x)
             .ToArray();
 
-        StaticLSnaps = Main.GetChildren()
+        StaticLSnaps = Main.Instance.GetChildren()
             .OfType<Sheet>()
             .Where(x => x != FocusSheet)
             .Select(x => x.GetTransformedSnapPoints(TextHalf.Left))
