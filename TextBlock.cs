@@ -61,6 +61,12 @@ public partial class TextBlock : RichTextLabel
         {
             Text = Params.Text;
         }
+
+        if (Params.Color.HasValue)
+        {
+            Color fix_alpha = new Color(Params.Color.Value.R, Params.Color.Value.G, Params.Color.Value.B, 1);
+            SelfModulate = fix_alpha;
+        }
     }
 
     public override void _Process(double delta)

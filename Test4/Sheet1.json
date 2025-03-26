@@ -1,0 +1,21 @@
+{
+    "Name": "sheet1",
+    "Size": {"X": 500.0,"Y": 500.0},
+    "Texts": {
+        "TheWay": {
+            "Side": "Right",
+            "Half": "Left",
+            "Text": "the way things are\nto know that\nwould not die\nkill me a second time",
+            "HalfPosition": 300.0,
+            "Color": { "R": 0, "G": 0, "B": 0 }
+        },
+        "TheKeeper": {
+            "Side": "Top",
+            "Half": "Right",
+            "Text": "the keeper in me\nto embrace the bars\nturn the key\nbe totally consumed",
+            "HalfPosition": 100.0,
+            "Color": { "R": 0, "G": 0, "B": 0 }
+        }
+    },
+    "Texture": "res://Test4/Texture1.png"
+}

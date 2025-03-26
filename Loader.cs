@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 using Godot;
 using GodotPlugins.Game;
@@ -52,6 +53,20 @@ public partial class Loader : Node
         }
 
         sheet.Size = config.Size;
+
+        if (!String.IsNullOrEmpty(config.Texture))
+        {
+            string resource_stem = resource_path.Left(resource_path.LastIndexOf('/') + 1);
+
+            if (!config.Texture.StartsWith("res:"))
+            {
+                sheet.TextureResourcePath = resource_stem + config.Texture;
+            }
+            else
+            {
+                sheet.TextureResourcePath = config.Texture;
+            }
+        }
 
         return sheet;
     }

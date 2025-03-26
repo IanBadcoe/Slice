@@ -13,6 +13,9 @@ public partial class Sheet : Panel
 
     public Vector2 Centre => GetGlobalTransform() * PivotOffset;
 
+    public string TextureResourcePath;
+    String SeenTexture;
+
     // adding half texts
     // vvvvvvvvvvvvvvvvv
 
@@ -130,6 +133,21 @@ public partial class Sheet : Panel
             tb.EnableDebugDraw = DDC.DoIHaveFocus(this);
         }
 
+        if (SeenTexture != TextureResourcePath)
+        {
+            if (!String.IsNullOrEmpty(TextureResourcePath))
+            {
+                TextureRect tr = GetNode<TextureRect>("TextureRect");
+
+                Image image = Image.LoadFromFile(TextureResourcePath);
+
+                tr.Texture = ImageTexture.CreateFromImage(image);
+                tr.Visible = true;
+            }
+
+            SeenTexture = TextureResourcePath;
+        }
+
         // DDC will ignore us if we aren't the sheet with mouse focus
         if (Input.IsActionJustPressed("Grab"))
         {
@@ -211,6 +229,7 @@ public partial class Sheet : Panel
 
         StyleBox = GetThemeStylebox("panel").Duplicate(false) as StyleBoxFlat;
         AddThemeStyleboxOverride("panel", StyleBox);
+        StyleBox.BgColor = Color.FromHsv((float)Random.Shared.NextDouble(), 0.5f, 0.5f);
 
         MouseEntered += () =>
         {
@@ -227,7 +246,6 @@ public partial class Sheet : Panel
 
         // test code
         // vvvvvvvvv
-        StyleBox.BgColor = Color.FromHsv((float)Random.Shared.NextDouble(), 0.5f, 0.5f);
 
         // {
         //     var Params = new TextParams

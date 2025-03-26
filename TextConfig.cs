@@ -50,6 +50,8 @@ namespace TextConfig
         }
 
         public float Rotation = 0;      ///< only applies when "internal"
+
+        public Color? Color;
     }
 
     public class TextSet : Dictionary<string, TextParams>
@@ -64,6 +66,8 @@ namespace TextConfig
         public Vector2 Size;
 
         public TextSet Texts;
+
+        public string Texture;
     }
 
     public class SheetSet
