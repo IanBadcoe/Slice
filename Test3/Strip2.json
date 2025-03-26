@@ -1,0 +1,12 @@
+{
+    "Name": "strip1",
+    "Size": {"X": 350.0,"Y": 600.0},
+    "Texts": {
+        "TheWay": {
+            "Side": "Span",
+            "Half": "Both",
+            "Text": "about last night / taking a corner\nwhere are you going fancy man\nwhat you deserve / in life\nwho you / become in life\na subtle echo / unsubtle\na message from poserity",
+            "HalfPosition": 500.0
+        }
+    }
+}

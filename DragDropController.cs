@@ -134,7 +134,6 @@ public partial class DragDropController : Node2D
 
         if (DoIHaveFocus(sheet))
         {
-            Debug.Print("Set DragPosition");
             DragPosition = sheet.Centre;
             DragRotation = sheet.Rotation;
         }
@@ -373,7 +372,5 @@ public partial class DragDropController : Node2D
     private void EndSnapping()
     {
         SawANonDragRotate = false;
-
-        Debug.Print("EndSnapping");
     }
 }

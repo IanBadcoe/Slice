@@ -1,0 +1,12 @@
+{
+    "Name": "strip1",
+    "Size": {"X": 200.0,"Y": 600.0},
+    "Texts": {
+        "TheWay": {
+            "Side": "Left",
+            "Half": "Right",
+            "Text": "/ dangerous speed\n/ all dressed up\nin all things\nin the telling / of it",
+            "HalfPosition": 400.0
+        }
+    }
+}

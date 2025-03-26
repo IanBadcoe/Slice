@@ -13,6 +13,11 @@ public partial class Menu : Control
         Loader.Instance.LoadLevel("res://Test2/SheetSet.json");
     }
 
+    public void OnTest3Pressed()
+    {
+        Loader.Instance.LoadLevel("res://Test3/SheetSet.json");
+    }
+
     public void OnQuitPressed()
     {
         GetTree().Quit();

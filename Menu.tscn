@@ -66,12 +66,17 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 60
 text = "Test 2"
 
+[node name="Test 3" type="MenuButton" parent="MarginContainer2/MarginContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 60
+text = "Test 3"
+
 [node name="Quit" type="MenuButton" parent="MarginContainer2/MarginContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 60
 text = "Quit"
 
 [connection signal="pressed" from="MarginContainer2/MarginContainer/MarginContainer/VBoxContainer/Test 1" to="." method="OnTest1Pressed"]
-[connection signal="pressed" from="MarginContainer2/MarginContainer/MarginContainer/VBoxContainer/Test 2" to="." method="OnTest1Pressed"]
 [connection signal="pressed" from="MarginContainer2/MarginContainer/MarginContainer/VBoxContainer/Test 2" to="." method="OnTest2Pressed"]
+[connection signal="pressed" from="MarginContainer2/MarginContainer/MarginContainer/VBoxContainer/Test 3" to="." method="OnTest3Pressed"]
 [connection signal="pressed" from="MarginContainer2/MarginContainer/MarginContainer/VBoxContainer/Quit" to="." method="OnQuitPressed"]
