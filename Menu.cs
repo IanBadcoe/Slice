@@ -23,6 +23,19 @@ public partial class Menu : Control
         Loader.Instance.LoadLevel("res://Test4/SheetSet.json");
     }
 
+    public void OnOpenFolder()
+    {
+        FileDialog fd = GetNode<FileDialog>("FileDialog");
+
+        fd.Position = ((Vector2I)Size - fd.Size) / 2;
+        fd.Popup();
+    }
+
+    public void OnDirSelected(string directory)
+    {
+        Loader.Instance.LoadLevel(directory + "/SheetSet.json");
+    }
+
     public void OnQuitPressed()
     {
         GetTree().Quit();

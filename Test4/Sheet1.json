@@ -17,5 +17,5 @@
             "Color": { "R": 0, "G": 0, "B": 0 }
         }
     },
-    "Texture": "res://Textures/Texture1.png"
+    "Texture": "Texture1"
 }

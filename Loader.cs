@@ -56,16 +56,9 @@ public partial class Loader : Node
 
         if (!String.IsNullOrEmpty(config.Texture))
         {
-            string resource_stem = resource_path.Left(resource_path.LastIndexOf('/') + 1);
+            string resource_stem = "res://Textures/";
 
-            if (!config.Texture.StartsWith("res:"))
-            {
-                sheet.TextureResourcePath = resource_stem + config.Texture;
-            }
-            else
-            {
-                sheet.TextureResourcePath = config.Texture;
-            }
+            sheet.TextureResourcePath = resource_stem + config.Texture + ".png";
         }
 
         return sheet;
