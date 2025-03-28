@@ -139,9 +139,9 @@ public partial class Sheet : Panel
             {
                 TextureRect tr = GetNode<TextureRect>("TextureRect");
 
-                Image image = Image.LoadFromFile(TextureResourcePath);
+                Texture2D texture = ResourceLoader.Load<Texture2D>(TextureResourcePath);
 
-                tr.Texture = ImageTexture.CreateFromImage(image);
+                tr.Texture = texture;
                 tr.Visible = true;
             }
 
