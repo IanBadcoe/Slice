@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cuh4wmjvjx21r"]
 
-[ext_resource type="Script" path="res://Overlay.cs" id="1_lbm8o"]
+[ext_resource type="Script" uid="uid://bk57d85mfhnya" path="res://Overlay.cs" id="1_lbm8o"]
 
 [node name="Overlay" type="Panel"]
 z_index = 10

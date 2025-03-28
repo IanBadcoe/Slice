@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://soxrrjcw4wyn"]
 
-[ext_resource type="Script" path="res://Sheet.cs" id="1_w6l83"]
+[ext_resource type="Script" uid="uid://c05h1j0crjm5" path="res://Sheet.cs" id="1_w6l83"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5p0u6"]
 border_color = Color(0.93, 0.93, 0.93, 1)

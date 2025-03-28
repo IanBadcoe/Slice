@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://bgbqkbjisootx"]
 
 [ext_resource type="FontFile" uid="uid://cewv34ju2e86u" path="res://Font/Montserrat/static/Montserrat-Regular.ttf" id="1_ko5bd"]
-[ext_resource type="Script" path="res://TextBlock.cs" id="1_tkiq6"]
+[ext_resource type="Script" uid="uid://bggh1levrqdbk" path="res://TextBlock.cs" id="1_tkiq6"]
 [ext_resource type="FontFile" uid="uid://b4o5js7ol117v" path="res://Font/Montserrat/static/Montserrat-Italic.ttf" id="2_bhc6h"]
 [ext_resource type="FontFile" uid="uid://bjr8sim6u3xlx" path="res://Font/Montserrat/static/Montserrat-BoldItalic.ttf" id="3_rr7qe"]
 [ext_resource type="FontFile" uid="uid://dabjy6rvnrlcn" path="res://Font/Montserrat/static/Montserrat-Bold.ttf" id="4_csi71"]

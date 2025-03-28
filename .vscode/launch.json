@@ -9,7 +9,7 @@
             "type": "coreclr",
             "request": "launch",
             // Change to godot.linuxbsd.editor.dev.x86_64.llvm for llvm-based builds.
-            "program": "C:/ian/Godot_v4.3-stable_mono_win64/Godot_v4.3-stable_mono_win64.exe",
+            "program": "C:/ian/Godot_v4.4.1-stable_mono_win64/Godot_v4.4.1-stable_mono_win64.exe",
             // Change the arguments below for the project you want to test with.
             // To run the project instead of editing it, remove the "--editor" argument.
             // "args": [ "--editor", "--path", "path-to-your-godot-project-folder" ],
