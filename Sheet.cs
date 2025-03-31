@@ -40,7 +40,7 @@ public partial class Sheet : Panel
                 break;
 
             case SheetSide.Left:
-                text_block.Position = new Vector2(TextBlock.HalfSpace, Size.Y - @params.HalfPosition);
+                text_block.Position = new Vector2(TextBlock.HalfSpace, @params.HalfPosition);
                 rot_in_right_angles = 2;
                 break;
 
@@ -50,7 +50,7 @@ public partial class Sheet : Panel
                 break;
 
             case SheetSide.Bottom:
-                text_block.Position = new Vector2(Size.X - @params.HalfPosition, Size.Y - text_block.Size.X - TextBlock.HalfSpace);
+                text_block.Position = new Vector2(@params.HalfPosition, Size.Y - text_block.Size.X - TextBlock.HalfSpace);
                 rot_in_right_angles = 1;
                 break;
 
@@ -182,6 +182,16 @@ public partial class Sheet : Panel
             if (Input.IsActionPressed("RotateCCW") || Input.IsActionJustReleased("RotateCCW"))
             {
                 DDC.RotateSheet(-(float)delta);
+            }
+
+            if (Input.IsActionJustPressed("MoveForward"))
+            {
+                DDC.MoveForward(this);
+            }
+
+            if (Input.IsActionJustPressed("MoveBackward"))
+            {
+                DDC.MoveBackward(this);
             }
 
             ShowBorder(true);

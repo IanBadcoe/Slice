@@ -214,6 +214,26 @@ public partial class DragDropController : Node2D
         }
     }
 
+    public void MoveForward(Sheet sheet)
+    {
+        if (FocusSheet == sheet)
+        {
+            int index =sheet.GetIndex();
+
+            Main.Instance.MoveChild(sheet, index + 1);
+        }
+    }
+
+    public void MoveBackward(Sheet sheet)
+    {
+        if (FocusSheet == sheet)
+        {
+            int index =sheet.GetIndex();
+
+            Main.Instance.MoveChild(sheet, index - 1);
+        }
+    }
+
     public void StartRotateDragging(Sheet sheet)
     {
         if (Mode == DragMode.None && sheet == MouseFocusSheet)
