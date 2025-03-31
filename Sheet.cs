@@ -16,6 +16,8 @@ public partial class Sheet : Panel
     public string TextureResourcePath;
     String SeenTexture;
 
+    bool FirstUpdate = true;
+
     // adding half texts
     // vvvvvvvvvvvvvvvvv
 
@@ -126,11 +128,17 @@ public partial class Sheet : Panel
 
     public override void _Process(double delta)
     {
-        // debug
-        // vvvvv
+        if (FirstUpdate)
+        {
+            // we auto-size and that is not known before now
+            PivotOffset = Size / 2;
+
+            FirstUpdate = false;
+        }
+
         foreach(TextBlock tb in GetChildren().OfType<TextBlock>())
         {
-            tb.EnableDebugDraw = DDC.DoIHaveFocus(this);
+            tb.EnableDraw = DDC.DoIHaveFocus(this);
         }
 
         if (SeenTexture != TextureResourcePath)
@@ -251,8 +259,6 @@ public partial class Sheet : Panel
             // prevented us from getting it
             DDC.LoseMouseFocus(this);
         };
-
-        PivotOffset = Size / 2;
 
         // test code
         // vvvvvvvvv

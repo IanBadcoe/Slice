@@ -363,8 +363,6 @@ public partial class DragDropController : Node2D
 
         FocusSheet.Position = DragPosition - pivot_offset;
 
-        FocusSheet.PivotOffset = pivot_offset;
-
         FocusSheet.Rotation = DragTransform.Rotation;
     }
 

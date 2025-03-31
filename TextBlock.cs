@@ -13,14 +13,14 @@ public partial class TextBlock : RichTextLabel
 
     TextParams InnerParams;
 
-    bool EnableDebugDrawInner = false;
+    bool EnableDrawInner = false;
 
-    public bool EnableDebugDraw
+    public bool EnableDraw
     {
-        get { return EnableDebugDrawInner; }
+        get { return EnableDrawInner; }
         set
         {
-            EnableDebugDrawInner = value;
+            EnableDrawInner = value;
             QueueRedraw();
         }
     }
